@@ -1,0 +1,4 @@
+interface:
+  display_name: "デジタル庁 イラスト・アイコン"
+  short_description: "公式素材を選定し、アクセシブルなUIへ安全に組み込む"
+  default_prompt: "Use $digital-agency-illustration-icons to select and implement suitable Digital Agency illustration or icon assets in this UI."
