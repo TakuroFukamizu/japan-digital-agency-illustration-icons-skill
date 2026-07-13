@@ -23,6 +23,14 @@ npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
   --agent codex
 ```
 
+Claude Codeのみに追加する場合:
+
+```bash
+npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
+  --skill digital-agency-illustration-icons \
+  --agent claude-code
+```
+
 ### このskillでできること
 
 - UIの目的や文脈に合う素材を、日本語または英語の意味から検索する
@@ -68,6 +76,14 @@ Install specifically for Codex:
 npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
   --skill digital-agency-illustration-icons \
   --agent codex
+```
+
+Install specifically for Claude Code:
+
+```bash
+npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
+  --skill digital-agency-illustration-icons \
+  --agent claude-code
 ```
 
 ### What this skill provides
