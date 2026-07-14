@@ -57,6 +57,21 @@ Skill本体は [`skills/digital-agency-illustration-icons/`](skills/digital-agen
 
 公式利用規約では、商用利用を含む利用が認められており、未改変での利用には原則としてクレジット表記が不要です。編集・加工した素材を公表、利用または再配布する場合は、出典と変更内容を明示し、国や府省が編集後の素材を作成したように見せてはいけません。利用前に必ず最新の公式利用規約を確認してください。
 
+### Skill適用前後の比較デモ
+
+同じ自治体向け申請管理画面を、skillなし／skillありで作成した比較デモを収録しています。
+
+![SkillなしとSkillありの画面比較](evaluation/admin-dashboard-comparison/screenshots/comparison.png)
+
+ローカルで操作する場合:
+
+```bash
+cd evaluation/admin-dashboard-comparison
+python3 -m http.server 8765
+```
+
+ブラウザで `http://localhost:8765` を開いてください。詳しい比較条件と結果は [`RESULTS.md`](evaluation/admin-dashboard-comparison/RESULTS.md) にあります。
+
 ---
 
 ## English
@@ -102,3 +117,7 @@ The bundled package contains 120 SVG icons, 360 PNG icon variants, 74 PNG illust
 Unless otherwise noted, the official assets remain copyrighted by the Digital Agency. They are governed by the Digital Agency's [Illustration and Icon Materials Terms of Use](https://www.digital.go.jp/policies/servicedesign/designsystem/Illustration_Icons/terms_of_use), not by this repository's MIT license. The bundled copy is available at [`assets/official/LICENSE.txt`](skills/digital-agency-illustration-icons/assets/official/LICENSE.txt).
 
 The official terms permit commercial use and generally do not require credit for unmodified assets. Published, used, or redistributed adaptations must identify the source and changes, and must not imply that the adapted material was created by the Government of Japan or one of its ministries. Check the current official terms before use.
+
+### Before/after comparison demo
+
+The repository includes the same municipal application-management dashboard implemented without and with the skill. See the [comparison results](evaluation/admin-dashboard-comparison/RESULTS.md), or serve `evaluation/admin-dashboard-comparison/` locally to interact with both versions.

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill適用前後の画面比較</title>
+    <link rel="stylesheet" href="comparison.css">
+  </head>
+  <body>
+    <header class="comparison-header">
+      <div>
+        <p>CONTROLLED UI COMPARISON</p>
+        <h1>Skill適用前後の画面比較</h1>
+        <span>情報設計・文言・データ・基本スタイルは共通。アイコン選定と実装規則だけを変えています。</span>
+      </div>
+      <div class="view-controls" role="group" aria-label="比較表示">
+        <button type="button" data-view="baseline">Skillなし</button>
+        <button type="button" data-view="split" aria-pressed="true">並べて比較</button>
+        <button type="button" data-view="skilled">Skillあり</button>
+      </div>
+    </header>
+
+    <main class="comparison-grid is-split" id="comparison">
+      <section class="comparison-pane baseline-pane">
+        <div class="pane-heading"><strong>Skillなし</strong><span>汎用の文字・記号アイコン</span><a href="baseline/" target="_blank">単独で開く</a></div>
+        <div class="frame-viewport"><iframe src="baseline/" title="Skillなしで作成した申請管理画面"></iframe></div>
+      </section>
+      <section class="comparison-pane skilled-pane">
+        <div class="pane-heading"><strong>Skillあり</strong><span>デジタル庁公式SVG・lineスタイル</span><a href="skilled/" target="_blank">単独で開く</a></div>
+        <div class="frame-viewport"><iframe src="skilled/" title="Skillを使用して作成した申請管理画面"></iframe></div>
+      </section>
+    </main>
+
+    <script>
+      const comparison = document.querySelector("#comparison");
+      const buttons = [...document.querySelectorAll("[data-view]")];
+      const resizeFrames = () => {
+        document.querySelectorAll(".frame-viewport").forEach((viewport) => {
+          const scale = Math.min(1, viewport.clientWidth / 1440);
+          viewport.style.setProperty("--frame-scale", scale);
+          viewport.style.height = `${920 * scale}px`;
+        });
+      };
+      buttons.forEach((button) => button.addEventListener("click", () => {
+        const view = button.dataset.view;
+        comparison.className = `comparison-grid is-${view}`;
+        buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        requestAnimationFrame(resizeFrames);
+      }));
+      new ResizeObserver(resizeFrames).observe(comparison);
+      resizeFrames();
+    </script>
+  </body>
+</html>

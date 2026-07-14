@@ -1,0 +1,49 @@
+:root {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  color: oklch(0.22 0.025 235);
+  background: oklch(0.94 0.008 230);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+.comparison-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 22px;
+  border-bottom: 1px solid oklch(0.82 0.015 230);
+  background: oklch(1 0 0 / .97);
+}
+
+.comparison-header p { margin: 0 0 3px; color: oklch(0.45 0.086 230); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.comparison-header h1 { margin: 0; font-size: 20px; letter-spacing: -.02em; }
+.comparison-header span { display: block; margin-top: 3px; color: oklch(0.46 0.025 230); font-size: 12px; }
+.view-controls { display: flex; padding: 3px; border: 1px solid oklch(0.80 0.02 230); border-radius: 9px; background: oklch(0.96 0.006 230); }
+.view-controls button { min-height: 34px; padding: 5px 12px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; }
+.view-controls button[aria-pressed="true"] { background: oklch(0.45 0.086 230); color: white; }
+
+.comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+.comparison-pane { min-width: 0; overflow: hidden; border: 1px solid oklch(0.82 0.015 230); border-radius: 12px; background: white; }
+.pane-heading { display: flex; align-items: center; gap: 9px; min-height: 42px; padding: 8px 12px; border-bottom: 1px solid oklch(0.86 0.012 230); }
+.pane-heading strong { font-size: 13px; }
+.pane-heading span { flex: 1; color: oklch(0.47 0.02 230); font-size: 11px; }
+.pane-heading a { color: oklch(0.35 0.08 230); font-size: 11px; }
+.frame-viewport { position: relative; width: 100%; overflow: hidden; background: oklch(0.965 0.004 230); }
+.frame-viewport iframe { position: absolute; inset: 0 auto auto 0; width: 1440px; height: 920px; border: 0; transform: scale(var(--frame-scale, .5)); transform-origin: top left; }
+
+.comparison-grid.is-baseline, .comparison-grid.is-skilled { grid-template-columns: minmax(0, 1440px); justify-content: center; }
+.comparison-grid.is-baseline .skilled-pane { display: none; }
+.comparison-grid.is-skilled .baseline-pane { display: none; }
+
+@media (max-width: 760px) {
+  .comparison-header { align-items: flex-start; flex-direction: column; }
+  .view-controls { width: 100%; }
+  .view-controls button { flex: 1; }
+  .comparison-grid { grid-template-columns: 1fr; }
+  .comparison-grid.is-split .comparison-pane + .comparison-pane { margin-top: 4px; }
+}
