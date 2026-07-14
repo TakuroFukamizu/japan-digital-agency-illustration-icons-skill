@@ -31,6 +31,35 @@ npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
   --agent claude-code
 ```
 
+### Skillの呼び出し方
+
+Skill名を明示して呼び出す場合:
+
+```text
+$digital-agency-illustration-icons を使って、
+この管理画面に適したデジタル庁のアイコンを選定・実装してください。
+```
+
+既存画面を改善する場合:
+
+```text
+$digital-agency-illustration-icons を使って、
+この申請一覧画面のアイコンをデジタル庁の公式素材へ置き換えてください。
+アクセシビリティと利用規約も確認してください。
+```
+
+Skill名を書かず、自然文から暗黙的に呼び出すこともできます:
+
+```text
+デジタル庁の公式イラストレーション・アイコン素材を使って、
+この行政手続き画面をアクセシブルに実装してください。
+```
+
+```text
+マイナンバーカードを使った本人確認手順に合う公式イラストを選び、
+この案内画面へ組み込んでください。
+```
+
 ### このskillでできること
 
 - UIの目的や文脈に合う素材を、日本語または英語の意味から検索する（複数概念のOR検索、全語一致検索に対応）
@@ -99,6 +128,35 @@ Install specifically for Claude Code:
 npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
   --skill digital-agency-illustration-icons \
   --agent claude-code
+```
+
+### Usage
+
+Invoke the skill explicitly by name:
+
+```text
+Use $digital-agency-illustration-icons to select and implement suitable
+Digital Agency icons for this admin dashboard.
+```
+
+Use it to improve an existing interface:
+
+```text
+Use $digital-agency-illustration-icons to replace the icons in this
+application-list screen with official Digital Agency assets. Also check
+accessibility and the asset terms of use.
+```
+
+The skill can also be invoked implicitly from a natural-language request:
+
+```text
+Use the Digital Agency's official illustration and icon materials to build
+this administrative procedure screen accessibly.
+```
+
+```text
+Choose an official illustration suitable for a My Number Card identity
+verification flow and add it to this guidance screen.
 ```
 
 ### What this skill provides
