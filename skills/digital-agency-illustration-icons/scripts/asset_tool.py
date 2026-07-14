@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import sys
 import unicodedata
@@ -17,20 +18,20 @@ ASSET_ROOT = SKILL_ROOT / "assets" / "official"
 
 ICON_KEYWORDS = {
     "add": "追加 plus create 新規",
-    "application": "申請 application request 手続き",
+    "application": "申請 application request 手続き 受付 未処理 確認待ち pending awaiting review",
     "arrival": "到着 arrival entry 入国",
     "arrow_down": "下 矢印 arrow down expand",
     "arrow_left": "左 矢印 arrow left back previous 戻る",
     "arrow_right": "右 矢印 arrow right next forward 次",
     "arrow_up": "上 矢印 arrow up collapse",
-    "attention": "注意 警告 warning alert caution",
+    "attention": "注意 警告 warning alert caution 要確認 書類不足 至急 required action",
     "authentication": "認証 authentication verify login 本人確認",
     "bank_account": "銀行口座 bank account 金融機関",
     "certification": "証明 certification certificate 証明書",
     "certification_with_seal": "証明 印鑑 seal certificate 証明書",
     "child": "こども 子供 child kids",
     "code_reader": "コードリーダー QR barcode scanner 読み取り",
-    "complete": "完了 complete success check done",
+    "complete": "完了 完了済み 処理済み complete success check done processed closed",
     "copy": "コピー copy duplicate 複製",
     "departure": "出発 departure exit 出国",
     "documents": "書類 documents files paperwork",
@@ -72,9 +73,9 @@ ICON_KEYWORDS = {
     "smartphone": "スマートフォン smartphone mobile phone 携帯",
     "specialist": "専門家 specialist expert professional",
     "stamp": "印鑑 stamp seal はんこ",
-    "tax": "税 tax taxation 税金 納税",
+    "tax": "税 tax taxation 税金 納税 支払い payment",
     "transactions": "取引 transactions exchange transfer 手続き",
-    "update": "更新 update refresh reload",
+    "update": "更新 update refresh reload 処理中 対応中 in progress processing",
     "work": "仕事 work job employment 職業",
 }
 
@@ -145,7 +146,7 @@ for number in range(19, 25):
 
 def normalize(value: str) -> str:
     value = unicodedata.normalize("NFKC", value).lower()
-    return " ".join(value.replace("_", " ").replace("-", " ").split())
+    return " ".join(re.sub(r"[\s_./,、|・-]+", " ", value).split())
 
 
 def entries(asset_type: str | None = None) -> list[dict[str, str]]:
@@ -171,25 +172,49 @@ def entries(asset_type: str | None = None) -> list[dict[str, str]]:
     return result
 
 
-def score_entry(entry: dict[str, str], query: str) -> int:
+def score_entry(entry: dict[str, str], query: str, match_mode: str = "any") -> int:
     query_norm = normalize(query)
     identifier = normalize(entry["id"])
     haystack = normalize(f'{entry["id"]} {entry["description"]}')
     if not query_norm:
         return 1
+    terms = query_norm.split()
     score = 0
     if query_norm == identifier or query_norm == identifier.split(" ", 1)[-1]:
         score += 100
     if query_norm in haystack:
         score += 40
-    for token in query_norm.split():
+    matched = 0
+    for token in terms:
         if token in identifier:
-            score += 15
+            score += 18
+            matched += 1
         elif token in haystack:
-            score += 6
-        else:
-            score -= 3
+            score += 8
+            matched += 1
+    if matched == 0:
+        return 0
+    if match_mode == "all" and matched != len(terms):
+        return 0
+    score += round(20 * matched / len(terms))
+    if matched == len(terms):
+        score += 25
     return score
+
+
+def search_entries(
+    query: str,
+    asset_type: str | None = None,
+    match_mode: str = "any",
+    limit: int = 12,
+) -> list[dict[str, str]]:
+    ranked = []
+    for entry in entries(asset_type):
+        score = score_entry(entry, query, match_mode)
+        if score > 0:
+            ranked.append((score, entry))
+    ranked.sort(key=lambda pair: (-pair[0], pair[1]["id"]))
+    return [entry for _, entry in ranked[:limit]]
 
 
 def emit(items: list[dict[str, str]], as_json: bool) -> None:
@@ -205,14 +230,9 @@ def emit(items: list[dict[str, str]], as_json: bool) -> None:
 
 
 def command_search(args: argparse.Namespace) -> int:
-    ranked = []
-    for entry in entries(args.type):
-        score = score_entry(entry, args.query)
-        if score > 0:
-            ranked.append((score, entry))
-    ranked.sort(key=lambda pair: (-pair[0], pair[1]["id"]))
-    emit([entry for _, entry in ranked[: args.limit]], args.json)
-    return 0 if ranked else 1
+    results = search_entries(args.query, args.type, args.match, args.limit)
+    emit(results, args.json)
+    return 0 if results else 1
 
 
 def command_list(args: argparse.Namespace) -> int:
@@ -289,6 +309,12 @@ def build_parser() -> argparse.ArgumentParser:
     search = subparsers.add_parser("search", help="Search by Japanese or English meaning")
     search.add_argument("query")
     search.add_argument("--type", choices=("icon", "illustration"))
+    search.add_argument(
+        "--match",
+        choices=("any", "all"),
+        default="any",
+        help="match any query term (default) or require all terms",
+    )
     search.add_argument("--limit", type=int, default=12)
     search.add_argument("--json", action="store_true")
     search.set_defaults(handler=command_search)

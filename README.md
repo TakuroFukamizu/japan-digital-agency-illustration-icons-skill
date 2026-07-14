@@ -33,7 +33,7 @@ npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
 
 ### このskillでできること
 
-- UIの目的や文脈に合う素材を、日本語または英語の意味から検索する
+- UIの目的や文脈に合う素材を、日本語または英語の意味から検索する（複数概念のOR検索、全語一致検索に対応）
 - 必要なSVG・PNGだけをプロジェクトへコピーする
 - アイコンのline/fill、PNGの24/48/72pxを選択する
 - HTML、React、Next.jsへアクセシブルに実装する
@@ -103,7 +103,7 @@ npx skills add TakuroFukamizu/japan-digital-agency-illustration-icons-skill \
 
 ### What this skill provides
 
-- Semantic asset search in Japanese and English
+- Semantic asset search in Japanese and English, with multi-concept OR and all-term matching
 - Deterministic copying of only the required SVG or PNG files
 - Selection of line/fill icon styles and 24/48/72px PNG sizes
 - Accessible implementation guidance for HTML, React, and Next.js

@@ -20,8 +20,12 @@ Use the bundled, unmodified June 2023 official asset package. Choose assets by m
    ```bash
    python3 <skill-dir>/scripts/asset_tool.py search "tax payment"
    python3 <skill-dir>/scripts/asset_tool.py search "マイナンバーカード スマートフォン" --type illustration
+   python3 <skill-dir>/scripts/asset_tool.py search "家族 健康 税金 通知 検索" --type icon
+   python3 <skill-dir>/scripts/asset_tool.py search "tax payment" --type icon --match all
    python3 <skill-dir>/scripts/asset_tool.py list --type icon
    ```
+
+   Searches match any query term by default so one request can discover assets for several independent UI concepts. Add `--match all` when every term must describe the same asset.
 
 4. Inspect promising files visually before selecting one. For the complete meaning map, read `references/catalog.md`. For official visual rules, consult the bundled PDFs in `assets/official/icon/` or `assets/official/illustration/` when the choice or treatment is unclear.
 5. Copy a selected asset with the tool:
